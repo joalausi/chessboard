@@ -23,16 +23,17 @@ function initializeChessboard() {
     for (let col = 1; col <= 8; col++) {
       const square = document.createElement('div');
       square.className = 'square';
-
       // ID format: square-<row>-<col> (1-based)
       square.id = `square-${row}-${col}`;
 
       // Compute color: top-left (1,1) must be white
       const isWhite = (row + col) % 2 === 0; // 1+1=2 even white
-      square.classList.add(isWhite ? 'white' : 'black');
+      const initialColor = isWhite ? 'white' : 'black';
 
-      square.style.backgroundColor = color;
-      square.dataset.originalColor = color;
+      square.style.backgroundColor = initialColor;
+      square.dataset.originalColor = initialColor;
+
+      square.classList.add(isWhite ? 'white' : 'black');
 
       board.appendChild(square);
     }
@@ -40,8 +41,8 @@ function initializeChessboard() {
 
   // click behavior: make clicked square red, revert previous
    let selectedSquare = null;
-  board.addEventListener('click', (evt) => {
-    const target = evt.target;
+    board.addEventListener('click', (e) => {
+    const target = e.target;
     if (!target || !target.classList || !target.classList.contains('square')) return;
 
     if (selectedSquare && selectedSquare !== target) {
